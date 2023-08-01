@@ -1,0 +1,66 @@
+---
+title: "README"
+author: "Amy Shelton"
+date: "2023-07-31"
+output: html_document
+---
+
+#### General Information
+
+There are 30 volunteers in the age range of 19-48 years old. 70% (21) of the volunteers are in the training data and 30% (9) are in the test data. The accelerometer and gyroscope data are measured at a constant rate of 50 Mz (50 cycles per second).
+
+Six activities were measured by the accelerometer and gyroscope:
+  
+1. Walking
+2. Walking upstairs
+3. Walking downstairs
+4. Sitting
+5. Standing
+6. Laying
+
+
+
+#### Accelerometer and Gyroscope in a Smartphone
+
+The **Accelerometer** sensor measures constant (gravity), time varying (vibrations) and quasi static (tilt) acceleration forces, which affect the device on the three axes (x, y and z) in meter per second squared (m/s2).
+
+Reference: Mohammed Z., Elfadel I., Rasras M. Monolithic multi degree of freedom (MDoF) capacitive MEMS accelerometers. Micromachines. 2018;9:602. doi: 10.3390/mi9110602
+
+The **Gyroscope** measures the angular velocity of the smartphone projected onto the x, y, and z axes. The angular velocity data are measured in units of radians per second (rad/s). 
+
+[Reference National Library of Medicine](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9002497/#:~:text=The%20gyroscope%20measures%20the%20angular,the%20z%2Daxis%20in%20orange)
+
+**Step 1:**
+
+First I loaded all the files into R. Next I combined the three test files using **cbind** to bind their columns into one dataframe named test, then I combined the three train files using **cbind** to bind their columns into one dataframe named train. Then, we combine these two new files using **rbind**, to bind their rows, into one file that contains the measurements and activities for all 30 participants.
+
+I loaded the **features file** into R, which **contains the variable name for the measurements** in the file with the 30 participants. The features file will be used to name the columns in the new dataset. 
+
+I loaded in the **activity labels file** in because it **contains the six activities, their names and their number (1-6)**. This will later be used to replace the activities column with the activity name rather than the activity number.
+
+Finally I used **colnames** to name all the columns in the new file with column 1 named **subject**, column 2 named **activity** and column three on are **named with the features file variable names**.
+
+**Step 2:**
+
+I used grep1 to extract only the columns in the dataframe that contained means and standard deviations. This creates a new file named Activity which includes the **subject**, **activity** and other columns with the word **mean or std**, thus extracting the requested columns.
+
+**Step 3:**
+
+I used the activity labels file to replace the activity column values (1-6) with the actual name of the activity (walking, etc.). This required the **factor** function.
+
+**Step 4:**
+
+I renamed the column names so that they are descriptive and readable. I used the **gsub** function for this. **gsub** got rid of the () and - and replaced it with nothing so that there is not a space in the column name. I also used **gsub** to replace f with frequencyDomain and so on so that the column names are now descriptive. I also had to correct an error in the data file where there was bodybody instead of just body in the column name.
+
+I stored these corrections in a file name ActivityCols because they are the new column names. Then I used **colnames** to replace the column names in the file Activity with the new description column names.
+
+**Step 5:**
+
+I used **group_by** to group the data by subject and activity, then found the mean for each subject for each activity using **summarise** and stored it in a file named ActivityMeans. From there I used **write.table** to store the new file of means in a text file named tidy_data.txt.
+
+
+
+
+
+
+
